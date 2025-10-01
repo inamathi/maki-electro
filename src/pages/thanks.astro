@@ -1,0 +1,53 @@
+---
+import Layout from "../layouts/ContactLayout.astro";
+import SectionHeading from "../components/heading/SectionHeading.astro";
+import Header from "@/components/common/Header.astro";
+import Footer from "@/components/common/Footer.astro";
+import { withBaseSafe } from "@/lib/withBase";
+---
+
+<Layout>
+  <Header />
+  <div class="body">
+    <SectionHeading
+      headingEn="Contact Us"
+      ,
+      headingJa="お問い合わせ"
+      ,
+      headingSub=""
+    />
+    <main class="message">
+      <p>
+        お問い合わせありがとうございました。<br />
+        内容を受け付けました。折り返しご連絡いたします。
+      </p>
+      <p class="btn_textlink"><a href={withBaseSafe("/")}>TOP</a></p>
+    </main>
+  </div>
+  <Footer />
+</Layout>
+
+<style lang="scss">
+  @use "../styles/var" as var;
+  .body {
+    padding: 40px 0;
+  }
+  .message {
+    width: 100%;
+    max-width: 720px;
+    margin: auto;
+    color: #fff;
+    line-height: 1.8;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .btn_textlink {
+    a {
+      background: var.$color-btn-primary;
+      padding: 10px 20px;
+      border-radius: 4px;
+    }
+  }
+</style>

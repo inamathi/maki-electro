@@ -1,0 +1,195 @@
+---
+import Layout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/heading/SectionHeading.astro";
+---
+
+<Layout>
+  <div class="body">
+    <SectionHeading
+      headingEn="Company Profile"
+      ,
+      headingJa="会社概要"
+      ,
+      headingSub=""
+    />
+
+    <table class="company-profile">
+      <tbody>
+        <tr>
+          <th>商　号</th>
+          <td
+            >株式会社マキエレクトロ<br /><a>https://www.maki-elec.co.jp/</a></td
+          >
+        </tr>
+        <tr>
+          <th>設　立</th>
+          <td>1995年７月</td>
+        </tr>
+        <tr>
+          <th>代表取締役</th>
+          <td>鈴木 俊久</td>
+        </tr>
+        <tr>
+          <th>所在地</th>
+          <td>〒245-0013 神奈川県横浜市泉区中田東1-37-22 イースト中田B</td>
+        </tr>
+        <tr>
+          <th class="map"></th>
+          <td class="map">
+            <div id="map" style="width: 100%; height: 400px;"></div>
+          </td>
+        </tr>
+        <tr>
+          <th>電　話</th>
+          <td>045-801-1971</td>
+        </tr>
+        <tr>
+          <th>FAX</th>
+          <td>045-801-1977</td>
+        </tr>
+        <tr>
+          <th>事業内容</th>
+          <td>
+            <ul>
+              <li>水晶関連製品の受託生産及び販売</li>
+              <li>基板設計・部品実装・基板検査・電子機器組立</li>
+              <li>半導体及び電子部品全般の販売</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th rowspan="2">関連企業</th>
+          <td
+            >株式会社アイティーシム<br /><a
+              href="https://www.itsim.com/"
+              target="_blank">https://www.itsim.com/</a
+            ></td
+          >
+        </tr>
+        <tr>
+          <td
+            >バンデバイス株式会社<br /><a
+              href="https://www.vandevice.com/"
+              target="_blank">https://www.vandevice.com/</a
+            ></td
+          >
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- initMap 関数（inline） -->
+  <script is:inline>
+    window.initMap = function () {
+      const location = { lat: 35.410314, lng: 139.513069 };
+
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: location,
+        zoom: 16,
+      });
+
+      new google.maps.Marker({
+        position: location,
+        map: map,
+        title: "株式会社マキエレクトロ",
+      });
+    };
+  </script>
+  <!-- Google Maps API 読み込み -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSRj63tkQnYMqKFjoBIQO2myAPvU6xvlc&callback=initMap"
+    async
+    defer></script>
+</Layout>
+
+<style lang="scss">
+  @use "../styles/var" as var;
+
+  .body {
+    padding: 40px 0;
+  }
+  .company-profile {
+    margin: auto;
+    border-collapse: separate;
+    border-spacing: 2px;
+    color: white;
+    padding: 40px 0;
+    th {
+      display: block;
+      text-align: left;
+      padding: 10px;
+      font-size: 0.9rem;
+      border-right: solid 2px rgba(255, 255, 255, 0.2);
+      color: var.$color-bluegray;
+    }
+    td {
+      display: block;
+      line-height: 1.6;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.9rem;
+      &.map {
+        padding: 0;
+      }
+      a {
+        &:link,
+        &:visited {
+          text-decoration: underline;
+          letter-spacing: 2px;
+          font-size: 0.85rem;
+        }
+      }
+      ul {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+    }
+  }
+  /* 1024px以上 */
+  @include var.up(lg) {
+    .body {
+      padding: 40px 0;
+    }
+    .company-profile {
+      margin: auto;
+      border-collapse: separate;
+      border-spacing: 2px;
+      color: white;
+      min-width: 960px;
+      padding: 40px 0;
+      th {
+        display: table-cell;
+        text-align: right;
+        padding: 10px;
+        font-size: 0.9rem;
+        border-right: solid 2px rgba(255, 255, 255, 0.2);
+      }
+      td {
+        display: table-cell;
+        line-height: 1.6;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.05);
+        font-size: 0.9rem;
+        &.map {
+          padding: 0;
+        }
+        a {
+          &:link,
+          &:visited {
+            text-decoration: underline;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+          }
+        }
+        ul {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 5px;
+        }
+      }
+    }
+  }
+</style>

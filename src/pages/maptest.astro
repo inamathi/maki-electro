@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/BaseLayout.astro';
+---
+
+<Layout>
+  <h1>Google Map テスト</h1>
+  <div id="map" style="width: 100%; height: 400px;"></div>
+
+  <!-- initMap 関数（inline） -->
+<script is:inline>
+  window.initMap = function () {
+    const location = { lat: 35.410314, lng: 139.513069 };
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+      center: location,
+      zoom: 16,
+    });
+
+    new google.maps.Marker({
+      position: location,
+      map: map,
+      title: "株式会社マキエレクトロ",
+    });
+  }
+</script>
+
+  <!-- Google Maps API 読み込み -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSRj63tkQnYMqKFjoBIQO2myAPvU6xvlc&callback=initMap"
+    async
+    defer
+  ></script>
+</Layout>

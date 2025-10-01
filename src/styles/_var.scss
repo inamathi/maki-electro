@@ -1,0 +1,104 @@
+@use "sass:map";
+// カラーパレット
+$color-primary: #212d37;
+$color-primary-dark: #11161b;
+$color-accent: #ff9900;
+$color-bg: #f9f9f9;
+$color-text: #333;
+$color-textnega: #e7e7e7;
+$color-skyblue: #6aa7d9;
+$color-sapphireblue: #00479d;
+$color-lymegreen: #3deb3d;
+$color-bluegray: #8aa4be;
+$color-crimson: rgb(220, 92, 92);
+$color-cream: #ebe5cd;
+
+// ボタン
+$color-btn-primary: #4288cf;
+$color-btn-secondary: #8aa4be;
+
+/* =========================
+   Breakpoints (centralized)
+   ========================= */
+$breakpoints: (
+  sm: 512px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  "2xl": 1546px,
+);
+
+/* 値を取得（存在チェック付き） */
+@function bp($name) {
+  @if map.has-key($breakpoints, $name) {
+    @return map.get($breakpoints, $name);
+  } @else {
+    @error "Unknown breakpoint: #{$name}. Valid: #{map.keys($breakpoints)}";
+  }
+}
+
+/* min-width: bp(name) 以上 */
+@mixin up($name) {
+  @media (min-width: bp($name)) {
+    @content;
+  }
+}
+
+/* max-width: bp(name) - 1px 以下 */
+@mixin down($name) {
+  $max: bp($name) - 1px;
+  @media (max-width: $max) {
+    @content;
+  }
+}
+
+/* min ≤ width ≤ (max - 1px) */
+@mixin between($min, $max) {
+  $minw: bp($min);
+  $maxw: bp($max) - 1px;
+  @media (min-width: $minw) and (max-width: $maxw) {
+    @content;
+  }
+}
+
+/* その帯だけ */
+@mixin only($name) {
+  @if $name == sm {
+    @include between(sm, md) {
+      @content;
+    }
+  } @else if $name == md {
+    @include between(md, lg) {
+      @content;
+    }
+  } @else if $name == lg {
+    @include between(lg, xl) {
+      @content;
+    }
+  } @else if $name == xl {
+    @include between(xl, "2xl") {
+      @content;
+    }
+  } @else if $name == "2xl" {
+    @include up("2xl") {
+      @content;
+    }
+  }
+}
+
+/* 環境ミックスイン（任意） */
+@mixin hoverable {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+@mixin no-hover {
+  @media (hover: none) {
+    @content;
+  }
+}
+@mixin reduce-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}

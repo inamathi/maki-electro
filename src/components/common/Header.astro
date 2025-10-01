@@ -1,0 +1,251 @@
+---
+import LogoMecJa from "../../assets/logoMecJa.svg";
+import { withBaseSafe } from "@/lib/withBase";
+---
+
+<header class="gheader" data-open="false">
+  <div class="gheader__bar">
+    <a href={withBaseSafe("/")} class="gheader__brand">
+      <LogoMecJa class="gheader__logo" />
+      <span class="gheader__name">株式会社マキエレクトロ</span>
+    </a>
+
+    <button
+      class="gheader__toggle"
+      aria-controls="gheader-menu"
+      aria-expanded="false"
+      aria-label="メニューを開く/閉じる"
+    >
+      <span class="gheader__hamburger" aria-hidden="true"></span>
+    </button>
+
+    <!-- PCではここが横並び。SPではドロワー（同じ要素をCSSで挙動切替） -->
+    <nav id="gheader-menu" class="gheader__menu" role="navigation">
+      <ul class="gheader__list" role="list">
+        <li><a href={withBaseSafe("/")}>TOP</a></li>
+        <li><a href={withBaseSafe("/company/")}>会社概要</a></li>
+        <li><a href={withBaseSafe("/contact/")}>お問い合わせ</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="gheader__overlay" aria-hidden="true"></div>
+</header>
+
+<style lang="scss">
+  @use "../../styles/var" as var;
+
+  .gheader {
+    --bp-pc: 1024px;
+    --h: 64px; /* ヘッダー高さは必要なら調整 */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var.$color-primary-dark;
+
+    .gheader__bar {
+      height: var(--h);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-inline: 16px;
+      max-width: 1920px;
+      margin-inline: auto;
+    }
+
+    .gheader__brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      .gheader__logo {
+        fill: var.$color-lymegreen;
+        width: 80px;
+      }
+      .gheader__name {
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.85rem;
+      }
+    }
+
+    .gheader__toggle {
+      margin-left: auto;
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 0;
+      color: #fff;
+      cursor: pointer;
+    }
+    .gheader__hamburger {
+      position: relative;
+      width: 24px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 2px;
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: currentColor;
+        border-radius: 2px;
+        transition:
+          transform 0.22s ease,
+          opacity 0.22s ease;
+      }
+      &::before {
+        top: -7px;
+      }
+      &::after {
+        top: 7px;
+      }
+    }
+
+    /* ▼ ドロワー（SP）。PCでは下のメディアクエリで横並びに変更 */
+    .gheader__menu {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: var(--h);
+      height: calc(100dvh - var(--h));
+      background: rgba(16, 24, 32, 0.88);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      transform: translateY(-6%);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+      z-index: 1001; /* オーバーレイより上 */
+      .gheader__list {
+        list-style: none;
+        margin: 0;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        a {
+          display: block;
+          color: #fff;
+          text-decoration: none;
+          padding: 12px 10px;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.06);
+        }
+      }
+    }
+
+    .gheader__overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 1000;
+    }
+
+    /* 開いた時の状態 */
+    &[data-open="true"] {
+      .gheader__menu {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .gheader__overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .gheader__hamburger {
+        background: transparent;
+        &::before {
+          transform: translateY(7px) rotate(45deg);
+        }
+        &::after {
+          transform: translateY(-7px) rotate(-45deg);
+        }
+      }
+    }
+
+    /* 1024px以上 */
+    @include var.up(lg) {
+      .gheader__toggle {
+        display: none;
+      }
+      .gheader__overlay {
+        display: none;
+      }
+      .gheader__menu {
+        position: static;
+        height: auto;
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+        background: transparent;
+        margin-left: auto;
+        .gheader__list {
+          flex-direction: row;
+          gap: 32px;
+          padding: 0;
+          a {
+            background: transparent;
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  // 開閉とスクロールロック
+  const header = document.querySelector(".gheader");
+  const toggle = header.querySelector(".gheader__toggle");
+  const overlay = header.querySelector(".gheader__overlay");
+  const menu = header.querySelector(".gheader__menu");
+  let scrollY = 0;
+
+  const open = () => {
+    header.dataset.open = "true";
+    toggle.setAttribute("aria-expanded", "true");
+    // iOS対策のスクロール固定
+    scrollY = window.scrollY;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+  };
+  const close = () => {
+    header.dataset.open = "false";
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
+    window.scrollTo(0, scrollY);
+  };
+
+  toggle.addEventListener("click", () => {
+    const isOpen = header.dataset.open === "true";
+    isOpen ? close() : open();
+  });
+  overlay.addEventListener("click", close);
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+
+  // PCに切り替わったら強制クローズ
+  const mq = window.matchMedia("(min-width: 1024px)");
+  mq.addEventListener("change", (e) => {
+    if (e.matches) close();
+  });
+</script>

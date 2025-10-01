@@ -1,0 +1,75 @@
+---
+import { withBaseSafe } from "@/lib/withBase";
+const { image, title, description, link } = Astro.props;
+const imgSrc = withBaseSafe(image);
+---
+
+<div class="card">
+  <img src={imgSrc} alt={title} loading="lazy" decoding="async" />
+  <dl>
+    <dt>{title}</dt>
+    <dd>{description}</dd>
+  </dl>
+</div>
+
+<style lang="scss">
+  @use "../../../styles/var" as var;
+  :root {
+    --page-pad: 20px; /* 画面の左右余白 */
+    --gap: 20px; /* カード同士の間隔 */
+  }
+  .card {
+    flex: 0 0 auto;
+    width: 360px;
+    background-color: #3b4c5a;
+    border-radius: 8px;
+    padding: 1rem;
+    color: #fff;
+    text-decoration: none;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
+    &:hover {
+      transform: scale(1.03);
+    }
+
+    img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+    dl {
+      dt {
+        font-weight: bold;
+        font-size: 1rem;
+        margin: 0 0 0.5rem;
+      }
+      dd {
+        font-size: 0.875rem;
+        line-height: 1.4;
+      }
+    }
+  }
+  @media (max-width: 511px) {
+    .card {
+      width: 320px;
+      margin-inline: auto;
+    }
+  }
+  @include var.between(md, lg) {
+    .card {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--gap);
+      width: clamp(236px, calc((100vw - 40px - 20px) / 2), 100%);
+    }
+    dl {
+    }
+  }
+
+  @include var.up(lg) {
+    .card {
+      width: 360px;
+      height: 320px;
+    }
+  }
+</style>

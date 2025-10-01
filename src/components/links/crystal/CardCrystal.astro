@@ -1,0 +1,116 @@
+---
+import { withBaseSafe } from "@/lib/withBase";
+const { image, title, description, link, class: className = "" } = Astro.props;
+const imgSrc = withBaseSafe(image);
+const items = Array.isArray(description)
+  ? description
+  : String(description)
+      .split(/[、,・]/)
+      .map((s) => s.trim())
+      .filter(Boolean);
+---
+
+<a class={`crystal-card ${className}`} href={link}>
+  <img
+    class="crystal-card__img"
+    src={imgSrc}
+    alt={title}
+    loading="lazy"
+    decoding="async"
+  />
+  <h3 class="crystal-card__title">{title}</h3>
+  <ul class="crystal-card__tags" role="list">
+    {items.map((item, i) => <li key={i}>{item}</li>)}
+  </ul>
+</a>
+
+<style lang="scss">
+  .crystal-card {
+    /* 幅は親レール側で決定。ここでは固定しない（=auto） */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #3b4c5a;
+    color: #fff;
+    text-decoration: none;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+
+    &:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+    }
+    @media (hover: none) {
+      &:hover {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+    &:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.9);
+      outline-offset: 4px;
+    }
+
+    &__img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      margin-bottom: 0.75rem;
+      border-radius: 8px;
+      transform: translateZ(0);
+    }
+
+    &__title {
+      font-size: clamp(0.95rem, 2.8vw, 1rem);
+      margin: 0 0 0.5rem;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    &__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      /* 行の最大高さで最小高をそろえる（レールから供給） */
+      min-height: var(--cr-tags-h, auto);
+      align-content: flex-start;
+      overflow: hidden;
+
+      li {
+        font-size: clamp(0.78rem, 2.6vw, 0.85rem);
+        line-height: 1.4;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 4px 8px;
+        border-radius: 6px;
+        white-space: nowrap;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+      &:hover {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,96 @@
+---
+import CardPcb from "./CardPcb.astro";
+import SectionHeading from "../../heading/SectionHeading.astro";
+
+const services = [
+  {
+    image: "/images/tmb_related-ec.webp",
+    title: "電子部品各種",
+    description: "正規品はもちろん市場在庫品のご提供も可能です",
+    link: "http://www.koyo-seimitu.co.jp/",
+  },
+  {
+    image: "/images/tmb_related-barechip.webp",
+    title: "ベアチップ",
+    description: "ダイ、ウェハーもご依頼お受けしています",
+    link: "https://nakaco.co.jp/",
+  },
+  {
+    image: "/images/tmb_related-pcb.webp",
+    title: "基板製作",
+    description:
+      "基板の設計開発から基板ASSY、検査、組立までお手伝いしております",
+    link: "https://www.siward.com/jp",
+  },
+];
+---
+
+<SectionHeading
+  headingEn="Printed Circuit Board"
+  ,
+  headingJa="基板関連製品"
+  ,
+  headingSub="取り扱い商品"
+/>
+<div class="scroll-wrapper" id="scrollWrapper">
+  <div class="scroll-list">
+    {
+      services.map((service) => (
+        <CardPcb
+          image={service.image}
+          title={service.title}
+          description={service.description}
+          link={service.link}
+        />
+      ))
+    }
+  </div>
+</div>
+
+<style lang="scss">
+  @use "../../../styles/var" as var;
+  :root {
+    --page-pad: 20px; /* 画面の左右余白 */
+    --gap: 20px; /* カード同士の間隔 */
+  }
+  .scroll-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    // Firefox
+    scrollbar-width: none;
+  }
+
+  .scroll-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: max-content;
+    margin: auto;
+  }
+  @include var.up(lg) {
+    .scroll-wrapper {
+      overflow-x: auto;
+      width: 100%;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      // Firefox
+      scrollbar-width: none;
+    }
+
+    .scroll-list {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--gap);
+      width: 100vw;
+      margin: auto;
+      padding: 0 var(--page-pad);
+    }
+  }
+</style>

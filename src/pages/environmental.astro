@@ -1,0 +1,161 @@
+---
+import Layout from "../layouts/DescriptionLayout.astro";
+import SectionHeading from "../components/heading/SectionHeading.astro";
+import { withBaseSafe } from "@/lib/withBase";
+---
+
+<Layout title="環境経営方針 | Environmental Management Policy">
+  <Fragment slot="head">
+    <meta
+      property="og:title"
+      content="環境経営方針 | Environmental Management Policy"
+    />
+    <meta property="og:type" content="website" />
+  </Fragment>
+  <SectionHeading
+    headingEn="Environmental"
+    ,
+    headingJa="環境経営方針"
+    ,
+    headingSub=""
+  />
+  <main class="environmental">
+    <dl class="body">
+      <dt>理 念</dt>
+      <dd>
+        当社は、お客さまの個人情報を正確かつ最新の状態に保ち、個人情報への不正アクセス・紛失・破損・改ざん・漏洩などを防止するため、セキュリティシステムの維持・管理体制の整備・社員教育の徹底等の必要な措置を講じ、安全対策を実施し個人情報の厳重な管理を行ないます。
+      </dd>
+      <dt>指 針</dt>
+      <dd>
+        <ul>
+          <li>
+            環境配慮型商品を積極的に販売することで、環境保全に貢献します。
+          </li>
+          <li>
+            省資源・省エネルギー・リサイクルなど、事業活動において環境負荷の低減を目指します。
+          </li>
+          <li>
+            グリーン調達に努め、有害化学物質の削減及び化学物質の管理を推進します。
+          </li>
+          <li>
+            環境保全、汚染の予防に努めるとともに、環境関連の法的要求事項、及び同意するその他の要求事項を順守します。
+          </li>
+          <li>
+            役員をはじめ社員全員に環境方針への理解と環境に関する意識の向上を図ります。
+          </li>
+          <li>
+            取引先各社及び社外へ理解と協力を要請するため、ホームページに環境方針を公開します。
+          </li>
+        </ul>
+      </dd>
+    </dl>
+  </main>
+  <p class="btn_textlink"><a href={withBaseSafe("/")}>TOP</a></p>
+</Layout>
+
+<style lang="scss">
+  @use "../styles/var" as var;
+  .environmental {
+    width: 100vw;
+    margin: auto;
+    color: #fff;
+    line-height: 1.8;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    font-size: 0.85rem;
+    padding: 40px 20px;
+    p {
+      text-align: left;
+    }
+    .body {
+      dt {
+        padding: 20px 0 5px;
+        font-weight: bold;
+        text-align: left;
+      }
+      dd {
+        text-align: left;
+        ul {
+          border: solid 2px rgba(var.$color-bluegray, 0.15);
+          padding: 20px;
+          margin: 10px 0;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          border-radius: 8px;
+          li {
+            border-left: solid 5px rgba(var.$color-bluegray, 0.5);
+            padding-left: 8px;
+            line-height: 1.6;
+          }
+        }
+      }
+    }
+    .contact {
+      dt {
+        font-size: 1rem;
+        text-align: left;
+        margin: 5px 0;
+      }
+      dd {
+        text-align: left;
+        font-size: 0.85rem;
+      }
+    }
+  }
+  @include var.up(lg) {
+    .environmental {
+      width: 100%;
+      max-width: 720px;
+      margin: auto;
+      color: #fff;
+      line-height: 1.8;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      font-size: 0.9rem;
+      padding: 40px 0;
+      p {
+        text-align: left;
+      }
+      .body {
+        dt {
+          padding: 20px 0 5px;
+          font-weight: bold;
+          text-align: left;
+        }
+        dd {
+          text-align: left;
+          ul {
+            border: solid 2px rgba(var.$color-bluegray, 0.15);
+            padding: 20px;
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-radius: 8px;
+            li {
+              border-left: solid 5px rgba(var.$color-bluegray, 0.5);
+              padding-left: 8px;
+              line-height: 1.6;
+            }
+          }
+        }
+      }
+      .contact {
+        dt {
+          font-size: 1rem;
+          text-align: left;
+          margin: 5px 0;
+        }
+        dd {
+          text-align: left;
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+</style>

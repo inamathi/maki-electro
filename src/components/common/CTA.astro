@@ -1,0 +1,153 @@
+---
+import { withBaseSafe } from "@/lib/withBase";
+const ctaBg = `url('${withBaseSafe("/images/bgimg_cta.webp")}')`;
+---
+
+<script>
+  const parent = document.querySelector(".parent");
+
+  if (parent !== null) {
+    const link = parent.querySelector("a");
+
+    if (link !== null) {
+      link.addEventListener("mouseenter", () => {
+        parent.classList.add("hover-bg");
+      });
+
+      link.addEventListener("mouseleave", () => {
+        parent.classList.remove("hover-bg");
+      });
+    }
+  }
+</script>
+
+<div class="cta parent" style={`--cta-bg: ${ctaBg};`}>
+  <a href={withBaseSafe("/contact/")}
+    >弊社取り扱い製品については<br />こちらよりお気軽にお問い合わせください</a
+  >
+</div>
+
+<style lang="scss">
+  @use "../../styles/var" as var;
+  @include var.down(md) {
+    .cta {
+      display: grid;
+      place-items: center;
+      width: 100vw;
+      aspect-ratio: 2 / 1;
+      padding: 20px;
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--cta-bg) center / cover no-repeat;
+        transform: scale(1.03);
+        transition: transform 0.35s ease;
+        will-change: transform;
+        z-index: 0;
+        background-size: cover;
+        transition: 0.3s;
+      }
+      a {
+        background: var.$color-sapphireblue;
+        font-size: 0.9rem;
+        text-align: center;
+        border-radius: 8px;
+        line-height: 1.8;
+        padding: 20px 20px;
+        color: var.$color-text;
+        font-weight: bold;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.35);
+        transition: 0.3s;
+        &:link,
+        &:visited {
+          color: var.$color-textnega;
+        }
+        &:hover {
+          transform: scale(1.05);
+          transition: 0.3s;
+          box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+    .parent {
+      position: relative;
+      overflow: hidden;
+    }
+    .parent:has(> a:hover)::before,
+    .parent:has(> a:focus-visible)::before {
+      transform: scale(1);
+      transition: 0.3s;
+    }
+    .parent > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* キーボード操作でも効かせたいなら */
+    .parent:has(a:focus-visible) {
+      background-size: 98%;
+      transition: 0.3s;
+    }
+  }
+  @include var.up(md) {
+    .cta {
+      display: grid;
+      place-items: center;
+      width: 100vw;
+      aspect-ratio: 6 / 1;
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--cta-bg) center / cover no-repeat;
+        transform: scale(1.03);
+        transition: transform 0.35s ease;
+        will-change: transform;
+        z-index: 0;
+        background-size: cover;
+        transition: 0.3s;
+      }
+      a {
+        background: var.$color-sapphireblue;
+        font-size: 1.2rem;
+        text-align: center;
+        border-radius: 8px;
+        line-height: 1.8;
+        padding: 20px 40px;
+        color: var.$color-text;
+        font-weight: bold;
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.35);
+        transition: 0.3s;
+        &:link,
+        &:visited {
+          color: var.$color-textnega;
+        }
+        &:hover {
+          transform: scale(1.05);
+          transition: 0.3s;
+          box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+    .parent {
+      position: relative;
+      overflow: hidden;
+    }
+    .parent:has(> a:hover)::before,
+    .parent:has(> a:focus-visible)::before {
+      transform: scale(1);
+      transition: 0.3s;
+    }
+    .parent > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* キーボード操作でも効かせたいなら */
+    .parent:has(a:focus-visible) {
+      background-size: 98%;
+      transition: 0.3s;
+    }
+  }
+</style>

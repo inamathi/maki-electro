@@ -1,0 +1,1176 @@
+---
+import Layout from "../layouts/ContactLayout.astro";
+import Header from "../components/common/Header.astro";
+import SectionHeading from "../components/heading/SectionHeading.astro";
+import Footer from "../components/common/Footer.astro";
+---
+
+<Layout>
+  <Header />
+  <div class="body">
+    <SectionHeading
+      headingEn="Contact Us"
+      ,
+      headingJa="お問い合わせ"
+      ,
+      headingSub=""
+    />
+
+    <form
+      id="contact-form"
+      action="https://formspree.io/f/xandnbpd"
+      method="post"
+      class="contact-form"
+      novalidate
+    >
+      <!-- Formspree用　ハニーポット -->
+      <input type="text" name="_gotcha" style="display:none" />
+      <!-- ハニーポット -->
+      <div class="hp-trap">
+        <label>
+          <input
+            type="text"
+            name="hp"
+            tabindex="-1"
+            autocomplete="off"
+            style="display:none"
+          />
+        </label>
+      </div>
+      <!-- お名前 / ふりがな -->
+      <div class="flex-column">
+        <div>
+          <label for="name">お名前<span class="req">＊</span></label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            autocomplete="name"
+            placeholder="Your Name"
+            data-label="お名前"
+            required
+          />
+        </div>
+        <div>
+          <label for="kana">ふりがな<span class="req">＊</span></label>
+          <input
+            type="text"
+            id="kana"
+            name="kana"
+            inputmode="text"
+            lang="ja"
+            autocapitalize="none"
+            placeholder="ふりがな"
+            data-label="ふりがな"
+            pattern="^[ぁ-ゖー・\s]+$"
+            required
+          />
+        </div>
+        <div>
+          <label for="tel">電話番号</label>
+          <input
+            type="tel"
+            id="tel"
+            name="tel"
+            inputmode="numeric"
+            autocomplete="tel"
+            placeholder="例）09012345678（ハイフン不要）"
+            pattern="[0-9]{10,11}"
+            title="数字のみ10〜11桁で入力してください"
+            data-label="電話番号"
+          />
+        </div>
+        <div>
+          <label for="email">メールアドレス<span class="req">＊</span></label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            autocomplete="email"
+            placeholder="@"
+            data-label="メールアドレス"
+            required
+          />
+        </div>
+        <div>
+          <label for="zip">郵便番号<span class="req">＊</span></label>
+          <input
+            type="text"
+            id="zip"
+            name="zip"
+            inputmode="numeric"
+            placeholder="Zip Code ex) 012-3456"
+            pattern="[0-9]{3}-?[0-9]{4}"
+            data-label="郵便番号"
+            required
+          />
+        </div>
+        <div>
+          <label for="pref">都道府県</label>
+          <span class="select-wrapper">
+            <select id="pref" name="pref"></select>
+          </span>
+        </div>
+        <div>
+          <label for="addr">住所</label>
+          <input
+            type="text"
+            id="addr"
+            name="addr"
+            placeholder="市区町村・番地・建物名"
+            data-label="住所"
+          />
+        </div>
+        <p id="zip-msg" class="addr-msg"></p>
+        <div>
+          <label for="company">会社名<span class="req">＊</span></label>
+          <input
+            type="text"
+            id="company"
+            name="company"
+            data-label="会社名"
+            required
+          />
+        </div>
+        <div>
+          <label for="division">部署名</label>
+          <input
+            type="text"
+            id="division"
+            name="division"
+            data-label="部署名"
+          />
+        </div>
+        <div>
+          <label for="title">役職名</label>
+          <input type="text" id="title" name="title" data-label="役職名" />
+        </div>
+        <div>
+          <label for="industry">業種</label>
+          <span class="select-wrapper">
+            <select id="industry" name="industry">
+              <option value="">選択してください</option>
+              <option>製造</option>
+              <option>卸売</option>
+              <option>小売</option>
+              <option>IT・ソフトウェア</option>
+              <option>建設</option>
+              <option>物流</option>
+              <option>医療・福祉</option>
+              <option>教育</option>
+              <option>金融</option>
+              <option>広告・メディア</option>
+              <option>その他</option>
+            </select>
+          </span>
+        </div>
+        <div>
+          <label class="inquiry" for="message"
+            >お問い合わせ内容<span class="req">＊</span></label
+          >
+          <textarea
+            id="message"
+            name="message"
+            class="js-autoresize"
+            data-label="お問い合わせ"></textarea>
+        </div>
+
+        <div id="form-msg" class="msg"></div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn_primary">送信</button>
+        <button type="reset" class="btn btn_secondary">クリア</button>
+      </div>
+      <!-- 確認モーダル -->
+      <div id="confirm-layer" class="confirm-layer" hidden>
+        <div
+          class="confirm-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="confirm-title"
+        >
+          <h3 id="confirm-title">入力内容の確認</h3>
+          <dl class="confirm-list">
+            <div><dt>お名前</dt><dd data-field="name"></dd></div>
+            <div><dt>ふりがな</dt><dd data-field="kana"></dd></div>
+            <div><dt>電話番号</dt><dd data-field="tel"></dd></div>
+            <div><dt>メール</dt><dd data-field="email"></dd></div>
+            <div><dt>郵便番号</dt><dd data-field="zip"></dd></div>
+            <div><dt>都道府県</dt><dd data-field="pref"></dd></div>
+            <div><dt>住所</dt><dd data-field="addr"></dd></div>
+            <div><dt>会社名</dt><dd data-field="company"></dd></div>
+            <div><dt>部署名</dt><dd data-field="division"></dd></div>
+            <div><dt>役職名</dt><dd data-field="title"></dd></div>
+            <div><dt>業種</dt><dd data-field="industry"></dd></div>
+
+            <!-- お問い合わせ内容だけ textarea 表示 -->
+            <div class="full">
+              <dt>お問い合わせ内容</dt>
+              <dd>
+                <textarea
+                  id="confirm-message"
+                  class="confirm-message"
+                  readonly
+                  required
+                  minlength="10"></textarea>
+              </dd>
+            </div>
+          </dl>
+          <div class="confirm-actions">
+            <button type="button" id="btn-edit" class="btn btn_secondary"
+              >修正</button
+            >
+            <button type="button" id="btn-send" class="btn btn_primary"
+              >送信</button
+            >
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <script>
+      // 全角→半角、長音/全角ハイフン→半角ハイフンに
+      // const toHalf = (s) => s.replace(/[！-～]/g, ch => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0));
+      const toHalf = (s) =>
+        s.replace(/[０-９]/g, (c) =>
+          String.fromCharCode(c.charCodeAt(0) - 0xfee0)
+        );
+      const normHyphen = (s) => s.replace(/[ー－―‐−]/g, "-");
+
+      const zipInput = document.getElementById("zip");
+      const telInput = document.getElementById("tel");
+      const kanaInput = document.getElementById("kana");
+
+      zipInput.addEventListener("input", () => {
+        zipInput.value = normHyphen(toHalf(zipInput.value)).replace(
+          /[^0-9-]/g,
+          ""
+        );
+      });
+
+      telInput.addEventListener("input", () => {
+        telInput.value = toHalf(telInput.value).replace(/\D/g, "");
+      });
+
+      // かな欄は全角スペース（U+3000）を普通の半角スペースに
+      kanaInput.addEventListener("input", () => {
+        kanaInput.value = kanaInput.value.replace(/\u3000/g, " ");
+      });
+
+      // 都道府県の選択肢
+      const PREFS = [
+        "",
+        "北海道",
+        "青森県",
+        "岩手県",
+        "宮城県",
+        "秋田県",
+        "山形県",
+        "福島県",
+        "茨城県",
+        "栃木県",
+        "群馬県",
+        "埼玉県",
+        "千葉県",
+        "東京都",
+        "神奈川県",
+        "新潟県",
+        "富山県",
+        "石川県",
+        "福井県",
+        "山梨県",
+        "長野県",
+        "岐阜県",
+        "静岡県",
+        "愛知県",
+        "三重県",
+        "滋賀県",
+        "京都府",
+        "大阪府",
+        "兵庫県",
+        "奈良県",
+        "和歌山県",
+        "鳥取県",
+        "島根県",
+        "岡山県",
+        "広島県",
+        "山口県",
+        "徳島県",
+        "香川県",
+        "愛媛県",
+        "高知県",
+        "福岡県",
+        "佐賀県",
+        "長崎県",
+        "熊本県",
+        "大分県",
+        "宮崎県",
+        "鹿児島県",
+        "沖縄県",
+      ];
+      const prefSel = document.getElementById("pref");
+      PREFS.forEach((p) => {
+        const opt = document.createElement("option");
+        opt.value = p;
+        opt.textContent = p || "選択してください";
+        prefSel.appendChild(opt);
+      });
+
+      const addrInput = document.getElementById("addr");
+      const zipMsg = document.getElementById("zip-msg");
+
+      // 郵便番号から住所を自動補完（ZipCloud）
+      async function fetchAddressFromZip(zip) {
+        zipMsg.textContent = "";
+        zipMsg.className = "addr-msg";
+        try {
+          const normalized = zip.replace(/[^0-9]/g, "");
+          if (normalized.length !== 7) return;
+
+          const res = await fetch(
+            `https://zipcloud.ibsnet.co.jp/api/search?zipcode=${normalized}`,
+            { mode: "cors" }
+          );
+          const data = await res.json();
+          if (data.status !== 200 || !data.results) {
+            zipMsg.textContent = "住所が見つかりませんでした。";
+            zipMsg.classList.add("error");
+            return;
+          }
+          const { address1, address2, address3 } = data.results[0];
+          // 都道府県セット
+          prefSel.value = address1;
+          // 以降の住所を入力
+          addrInput.value = `${address2}${address3}`.trim();
+          // ★ここから：住所欄にフォーカス＆カーソルを末尾へ
+          const end = addrInput.value.length;
+          addrInput.focus({ preventScroll: true }); // 画面スクロールを抑止
+          // iOS/Safari対策で次フレームにキャレット移動
+          requestAnimationFrame(() => {
+            try {
+              addrInput.setSelectionRange(end, end);
+            } catch {}
+          });
+          zipMsg.textContent = "郵便番号から住所を自動入力しました";
+          zipMsg.classList.add("success");
+        } catch (e) {
+          zipMsg.textContent =
+            "住所検索に失敗しました。通信環境をご確認ください。";
+          zipMsg.classList.add("error");
+        }
+      }
+
+      // フォーカスアウト or 7桁到達で検索
+      zipInput.addEventListener("blur", () =>
+        fetchAddressFromZip(zipInput.value)
+      );
+      zipInput.addEventListener("input", () => {
+        const n = zipInput.value.replace(/[^0-9]/g, "");
+        if (n.length === 7) fetchAddressFromZip(zipInput.value);
+      });
+    </script>
+  </div>
+  <Footer />
+  <!-- textarea自動拡大 -->
+  <script type="module" src="/scripts/auto-resize.js"></script>
+  <!-- 確認画面スクリプト -->
+  <script is:inline>
+    (() => {
+      const form = document.getElementById("contact-form");
+      const layer = document.getElementById("confirm-layer");
+      const btnEdit = document.getElementById("btn-edit");
+      const btnSend = document.getElementById("btn-send");
+      if (!form || !layer) return;
+
+      // 表示テキスト反映
+      const put = (key, val) => {
+        const node = layer.querySelector(`[data-field="${key}"]`);
+        if (!node) return;
+        const text = (val ?? "").toString().trim();
+        node.textContent = text || "—";
+      };
+      const setConfirmMessage = (val) => {
+        const ta = layer.querySelector("#confirm-message");
+        const v = (val ?? "").toString().trim();
+        if (!ta) return;
+        ta.value = v;
+        ta.style.height = "auto";
+        ta.style.height = ta.scrollHeight + "px";
+      };
+
+      // 背景スクロール固定/解除（iOS対応）
+      function lockScroll() {
+        const y = window.scrollY;
+        document.body.dataset.scrollY = String(y);
+        Object.assign(document.body.style, {
+          position: "fixed",
+          top: `-${y}px`,
+          left: "0",
+          right: "0",
+          width: "100%",
+          overflow: "hidden",
+        });
+      }
+      function unlockScroll() {
+        const y = parseInt(document.body.dataset.scrollY || "0", 10);
+        document.body.removeAttribute("style");
+        delete document.body.dataset.scrollY;
+        window.scrollTo(0, y);
+      }
+
+      // フォーカストラップ
+      let prevFocus = null;
+      const focusableSelector =
+        'a[href],area[href],input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),[tabindex]:not([tabindex="-1"])';
+
+      const getFocusables = () =>
+        Array.from(layer.querySelectorAll(focusableSelector)).filter(
+          (el) =>
+            (!el.hasAttribute("hidden") && el.offsetParent !== null) ||
+            el === layer
+        );
+
+      function onKeyDown(e) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          closeModal();
+          return;
+        }
+        if (e.key !== "Tab") return;
+        const els = getFocusables();
+        if (!els.length) return;
+        const first = els[0],
+          last = els[els.length - 1];
+        if (e.shiftKey) {
+          if (
+            document.activeElement === first ||
+            !layer.contains(document.activeElement)
+          ) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+      function trapOutside(e) {
+        if (!layer.hidden && !layer.contains(e.target)) {
+          e.stopPropagation();
+          const els = getFocusables();
+          (els[0] || layer).focus({ preventScroll: true });
+        }
+      }
+      function enableTrap() {
+        layer.addEventListener("keydown", onKeyDown);
+        document.addEventListener("focus", trapOutside, true);
+      }
+      function disableTrap() {
+        layer.removeEventListener("keydown", onKeyDown);
+        document.removeEventListener("focus", trapOutside, true);
+      }
+
+      // 公開：確認モーダルを開く
+      window.openConfirmModal = async () => {
+        const zipEl = form.querySelector("#zip");
+        const addrEl = form.querySelector("#addr");
+
+        // 郵便番号が7桁 & 住所未入力なら補完を待つ
+        const zipNormalized = (zipEl?.value || "").replace(/[^0-9]/g, "");
+        if (zipNormalized.length === 7 && addrEl && !addrEl.value.trim()) {
+          if (typeof fetchAddressFromZip === "function") {
+            try {
+              await fetchAddressFromZip(zipEl.value);
+            } catch {}
+          }
+        }
+
+        // 値を反映
+        const fd = new FormData(form);
+        put("name", fd.get("name"));
+        put("kana", fd.get("kana"));
+        put("tel", fd.get("tel"));
+        put("email", fd.get("email"));
+        put("zip", fd.get("zip"));
+        put("pref", fd.get("pref"));
+        put("addr", fd.get("addr"));
+        put("company", fd.get("company"));
+        put("division", fd.get("division"));
+        put("title", fd.get("title"));
+        put("industry", fd.get("industry"));
+        setConfirmMessage(fd.get("message"));
+
+        // 表示＋スクロール固定＋フォーカストラップ
+        layer.hidden = false;
+        document.documentElement.classList.add("confirm-open");
+        lockScroll();
+        prevFocus = document.activeElement;
+        enableTrap();
+
+        // 初期フォーカス
+        const els = getFocusables();
+        (els[0] || btnEdit || btnSend || layer).focus({ preventScroll: true });
+      };
+
+      function closeModal() {
+        layer.hidden = true;
+        document.documentElement.classList.remove("confirm-open");
+        disableTrap();
+        unlockScroll();
+        if (prevFocus && document.body.contains(prevFocus)) {
+          try {
+            prevFocus.focus({ preventScroll: true });
+          } catch {}
+        }
+      }
+
+      // モーダル外（背景）クリックで閉じる
+      layer.addEventListener("click", (e) => {
+        if (e.target === layer) closeModal();
+      });
+
+      // ボタン：修正
+      btnEdit?.addEventListener("click", () => {
+        closeModal();
+      });
+
+      // ボタン：送信
+      async function submitToFormspree() {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        if (!res.ok) throw new Error("Formspree error");
+        location.assign("/thanks");
+      }
+
+      btnSend?.addEventListener("click", async () => {
+        if (btnSend.disabled) return;
+        form.dataset.confirmed = "1";
+        btnSend.disabled = true;
+        if (typeof closeModal === "function") closeModal();
+
+        try {
+          await submitToFormspree();
+        } catch {
+          alert("送信に失敗しました。時間をおいて再度お試しください。");
+          btnSend.disabled = false;
+        }
+      });
+    })();
+  </script>
+
+  <!-- 入力バリデーション（日本語・項目下にメッセージ表示） -->
+  <script is:inline>
+    (() => {
+      const form = document.getElementById("contact-form");
+      if (!form) return;
+
+      // 1) UA標準のエラーツールチップを完全に抑止（キャプチャ段階）
+      form.addEventListener("invalid", (e) => e.preventDefault(), true);
+
+      const labelOf = (el) =>
+        el.dataset.label ||
+        form.querySelector(`label[for="${el.id}"]`)?.textContent?.trim() ||
+        el.name ||
+        "この項目";
+
+      const jaMessage = (el) => {
+        const v = el.validity,
+          name = labelOf(el);
+
+        if (v.customError) return el.validationMessage;
+
+        if (v.valueMissing) return `${name}は必須です`;
+        if (v.typeMismatch)
+          return el.type === "email"
+            ? "正しいメールアドレス形式で入力してください"
+            : "正しい形式で入力してください";
+        if (v.patternMismatch) {
+          if (el.id === "kana")
+            return "ひらがな（ー・スペース可）で入力してください";
+          if (el.id === "tel") return "数字のみ10〜11桁で入力してください";
+          if (el.id === "zip")
+            return "郵便番号は「123-4567」または「1234567」で入力してください";
+          return `${name}の形式が正しくありません`;
+        }
+        if (v.tooShort) {
+          // minlength に引っかかった場合
+          if (el.id === "message")
+            return "お問い合わせ内容は10文字以上でご記入ください。";
+          return `${name}の文字数が不足しています。`;
+        }
+        return "入力内容をご確認ください";
+      };
+
+      // 全角ASCII→半角 + 全角スペース→半角
+      const toHalfAscii = (s) =>
+        String(s)
+          .replace(/[！-～]/g, (ch) =>
+            String.fromCharCode(ch.charCodeAt(0) - 0xfee0)
+          )
+          .replace(/\u3000/g, " ");
+
+      // ★ URLのみ判定：前後の括弧・句読点・空白を剥がして、全文がURLかを判定（メールは除外）
+      const isOnlyUrl = (s) => {
+        let t = toHalfAscii(String(s)).toLowerCase().trim();
+
+        // 前後のカッコ/引用符/句読点/空白を剥がす（全角含む）
+        t = t.replace(
+          /^[\s"'“”'’()（）［\[\]【】「」『』〈〉《》，。、.!?]+|[\s"'“”'’()（）［\[\]【】「」『』〈〉《》，。、.!?]+$/g,
+          ""
+        );
+
+        const email = /^[a-z0-9._%+-]+@(?:[a-z0-9-]+\.)+[a-z]{2,}$/i; // メールは許可
+        if (email.test(t)) return false;
+
+        // 3パターン（+ IP）すべて全文一致（^...$）
+        const scheme = /^(https?:\/\/)[^\s<>"']{3,}$/i;
+        const www = /^www\.[^\s<>"']{3,}$/i;
+        const bare =
+          /^(?:[a-z0-9-]{1,63}\.)+(?:[a-z]{2,})(?::\d{2,5})?(?:\/[^\s<>"']*)?$/i;
+        const ip =
+          /^(?:https?:\/\/)?\d{1,3}(?:\.\d{1,3}){3}(?::\d{2,5})?(?:\/[^\s<>"']*)?$/i;
+
+        return scheme.test(t) || www.test(t) || bare.test(t) || ip.test(t);
+      };
+
+      // === 複数バルーン対応（置き換えブロック） ===
+
+      // 各フィールドごとに専用バルーンを持つ
+      const tipMap = new Map(); // Map<HTMLElement, HTMLDivElement>
+      let globalHandlersAttached = false;
+
+      const ensureGlobalHandlers = () => {
+        if (globalHandlersAttached) return;
+        const clearAllTips = () => {
+          tipMap.forEach((tip) => tip.remove());
+          tipMap.clear();
+        };
+        // スクロール/リサイズで一旦全て消す（位置ズレ防止）
+        window.addEventListener("scroll", clearAllTips, { passive: true });
+        window.addEventListener("resize", clearAllTips);
+        globalHandlersAttached = true;
+      };
+
+      const ensureTipFor = (el) => {
+        let tip = tipMap.get(el);
+        if (!tip) {
+          tip = document.createElement("div");
+          tip.className = "err-pop";
+          tip.setAttribute("role", "alert");
+          tip.hidden = true;
+          document.body.appendChild(tip);
+          tipMap.set(el, tip);
+        }
+        return tip;
+      };
+
+      const positionTipBelow = (
+        el,
+        tip,
+        { offsetY = 8, align = "left" } = {}
+      ) => {
+        tip.hidden = false;
+        // 幅を確定
+        // eslint-disable-next-line no-unused-expressions
+        tip.offsetWidth;
+
+        const r = el.getBoundingClientRect();
+        const vw = document.documentElement.clientWidth;
+        const scrollX = window.scrollX,
+          scrollY = window.scrollY;
+
+        let left = r.left + scrollX;
+        if (align === "right") left = r.right + scrollX - tip.offsetWidth;
+        if (align === "center")
+          left = r.left + scrollX + (r.width - tip.offsetWidth) / 2;
+
+        const minL = 8 + scrollX;
+        const maxL = vw - tip.offsetWidth - 8 + scrollX;
+        left = Math.max(minL, Math.min(maxL, left));
+
+        const top = r.bottom + offsetY + scrollY;
+        tip.style.left = `${left}px`;
+        tip.style.top = `${top}px`;
+      };
+
+      const showTipFor = (el, msg, opts) => {
+        ensureGlobalHandlers();
+        const tip = ensureTipFor(el);
+        tip.textContent = msg;
+        positionTipBelow(el, tip, opts);
+        tip.hidden = false;
+      };
+
+      const removeTipFor = (el) => {
+        const tip = tipMap.get(el);
+        if (tip) {
+          tip.remove();
+          tipMap.delete(el);
+        }
+      };
+
+      const fields = [...form.querySelectorAll("input, select, textarea")];
+
+      // 入力開始でメッセージ解除＆バルーン非表示
+      const clear = (e) => {
+        e.target.setCustomValidity("");
+        hideTip();
+      };
+      fields.forEach((el) => el.addEventListener("input", clear, true));
+
+      // 3) ★重要：submit をキャプチャ段階で“先取り”し、後続を完全ブロック
+      form.addEventListener(
+        "submit",
+        async (e) => {
+          // 2回目（モーダル「送信」後の本送信）は素通し
+          if (form.dataset.confirmed === "1") return;
+
+          e.preventDefault();
+          e.stopImmediatePropagation(); // 他の submit ハンドラを全ブロック
+
+          // サジェスト等の被りを避ける
+          const ae = document.activeElement;
+          if (ae && ae instanceof HTMLElement) ae.blur();
+          await new Promise((r) => setTimeout(r, 0));
+
+          // 既存のエラー表示をいったんリセット
+          fields.forEach((el) => {
+            el.setCustomValidity("");
+            el.classList.remove("is-invalid");
+            if (typeof removeTipFor === "function") removeTipFor(el);
+          });
+
+          // --- 独自バリデーション：message の「URLのみ」＆「10文字未満」を弾く ---
+          const messageEl = form.querySelector("#message");
+          if (messageEl) {
+            const raw = messageEl.value || "";
+
+            // 1) URLのみ → NG（長さに関係なく弾く）
+            if (isOnlyUrl(raw)) {
+              messageEl.setCustomValidity(
+                "URLのみの送信はできません。ご用件もあわせてご記入ください"
+              );
+            } else {
+              // 2) それ以外は最小文字数（空白を除いた長さで判定）
+              const nonWSLen = toHalfAscii(raw).replace(/\s/g, "").length;
+              if (nonWSLen < 10) {
+                messageEl.setCustomValidity(
+                  "お問い合わせ内容は空白以外で10文字以上ご記入ください"
+                );
+              } else {
+                messageEl.setCustomValidity("");
+              }
+            }
+          }
+          // --- 独自バリデーションここまで ---
+
+          // 不正な要素を全部集める
+          const invalidEls = fields.filter((el) => !el.checkValidity());
+
+          if (invalidEls.length) {
+            // すべてに赤枠＋黒バルーンを表示（文言は jaMessage で整形、customError 最優先）
+            invalidEls.forEach((el) => {
+              const msg = jaMessage(el);
+              el.setCustomValidity(msg);
+              el.classList.add("is-invalid");
+
+              // 入力/変更したらその項目だけ自動で解除＆バルーンも消す
+              const removeOnce = (evt) => {
+                evt.target.classList.remove("is-invalid");
+                evt.target.setCustomValidity("");
+                if (typeof removeTipFor === "function")
+                  removeTipFor(evt.target);
+              };
+              el.addEventListener("input", removeOnce, {
+                once: true,
+                capture: true,
+              });
+              el.addEventListener("change", removeOnce, {
+                once: true,
+                capture: true,
+              });
+
+              if (typeof showTipFor === "function") {
+                showTipFor(el, msg, { align: "left" }); // 各要素の下に表示
+              }
+            });
+
+            // 最初の不備へフォーカス
+            invalidEls[0].focus({ preventScroll: true });
+            return; // 送信中止
+          }
+
+          // ここまで来たら検証OK → 確認モーダルへ
+          if (typeof window.openConfirmModal === "function") {
+            await window.openConfirmModal();
+          }
+        },
+        true // ← capture は必ず true
+      );
+    })();
+  </script>
+</Layout>
+
+<style lang="scss">
+  @use "../styles/var" as var;
+  .body {
+    padding: 40px 0;
+  }
+  .hp-trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .contact-form {
+    margin: auto;
+    color: white;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0;
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      p {
+        &.addr-msg {
+          font-size: 0.85rem;
+          width: 100%;
+          padding-left: 190px;
+        }
+      }
+      div {
+        display: grid;
+        grid-template-columns: 160px minmax(0, 1fr);
+        gap: 20px;
+        label {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          padding: 10px;
+          font-size: 0.9rem;
+          text-align: right;
+          &.inquiry {
+            align-items: flex-start;
+          }
+          span {
+            position: absolute;
+            color: var.$color-crimson;
+            font-size: 0.8rem;
+            right: -5px;
+          }
+        }
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"] {
+          background: rgba(255, 255, 255, 0.85);
+          padding: 5px 10px;
+          border-radius: 2px;
+          color: var.$color-primary;
+          font-size: 0.9rem;
+          height: 40px;
+          &::placeholder {
+            color: gray;
+            font-size: 0.9rem;
+          }
+          &:focus {
+            border: solid 2px var.$color-btn-primary;
+          }
+        }
+        .select-wrapper {
+          position: relative;
+          width: 200px;
+          select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 5px 10px;
+            border-radius: 2px;
+            color: var.$color-primary;
+            font-size: 0.9rem;
+            height: 40px;
+          }
+          &::after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+            right: 0.7rem;
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+            width: 0.5rem;
+            height: 0.5rem;
+            border-right: 2px solid var.$color-bluegray;
+            border-bottom: 2px solid var.$color-bluegray;
+            opacity: 0.8;
+          }
+        }
+        textarea {
+          width: 100%;
+          min-height: 100px; /* 初期の高さ */
+          max-height: 1000px;
+          resize: none; /* ユーザーによる手動リサイズを禁止（必要に応じて） */
+          overflow: hidden; /* スクロールバーを隠す */
+          font-size: 1rem;
+          line-height: 1.5;
+          border-radius: 2px;
+          background: rgba(255, 255, 255, 0.85);
+          padding: 10px;
+          color: var.$color-primary;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  .confirm-open {
+    overflow: hidden;
+  }
+
+  .confirm-layer {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: grid;
+    place-items: center;
+    z-index: 1000;
+
+    .confirm-dialog {
+      width: min(720px, 92vw);
+      max-height: 88vh; // 画面内に収める
+      overflow: auto;
+      background: #fff;
+      color: #222;
+      border-radius: 12px;
+      padding: 20px 20px 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+      h3 {
+        margin: 0 0 12px;
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+
+      .confirm-list {
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 16px 16px;
+
+        > div {
+          display: contents;
+        }
+        dt {
+          font-weight: 600;
+          font-size: 0.85rem;
+          color: var.$color-bluegray;
+          text-align: right;
+        }
+        dd {
+          margin: 0;
+          color: var.$color-primary;
+        }
+
+        .full {
+          grid-column: 1 / -1;
+          display: contents;
+        }
+
+        .confirm-message {
+          width: 100%;
+          min-height: 120px;
+          max-height: 40vh;
+          overflow: auto;
+          resize: vertical;
+          white-space: pre-wrap;
+          line-height: 1.6;
+          font: inherit;
+          font-size: 0.85rem;
+          line-height: 1.6;
+          padding: 10px;
+          border: 1px solid #e5e7eb;
+          border-radius: 6px;
+          background: #fafafa;
+        }
+      }
+
+      .confirm-actions {
+        margin-top: 16px;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+
+        .btn {
+          padding: 10px 16px;
+          border-radius: 6px;
+          cursor: pointer;
+        }
+        .btn_primary {
+          background: #2563eb;
+          color: #fff;
+          border: none;
+        }
+        .btn_secondary {
+          background: #e5e7eb;
+          color: #111;
+          border: none;
+        }
+      }
+    }
+
+    // ↓ これが無いと hidden が効かず出っぱなしになります
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  .contact-form .flex-column div {
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    textarea,
+    .select-wrapper select {
+      border: 1px solid transparent; /* ← 追加 */
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+  }
+
+  /* ★ エラー時の赤枠（:global で動的要素にも確実に適用） */
+  :global(.is-invalid) {
+    border-color: var.$color-crimson !important;
+  }
+  /* 単項目のエラーメッセージ＆赤枠 */
+  :global(.err-pop) {
+    position: absolute;
+    z-index: 10000;
+    max-width: 22rem;
+    background: var.$color-cream;
+    color: var.$color-crimson;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    transform: translateX(12px);
+  }
+  :global(.err-pop::after) {
+    /* 吹き出しの三角（下に出す例） */
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var.$color-cream;
+    transform: rotate(45deg);
+    left: 12px;
+    top: -5px; /* 吹き出しが入力の下側に出る想定 */
+  }
+
+  @include var.down(md) {
+    .contact-form {
+      margin: auto;
+      color: white;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 20px;
+      .flex-column {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        p {
+          &.addr-msg {
+            font-size: 0.85rem;
+            width: 100%;
+            padding-left: 190px;
+          }
+        }
+        div {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          label {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 10px 10px 0;
+            font-size: 0.9rem;
+            text-align: left;
+            &.inquiry {
+              align-items: flex-start;
+            }
+            span {
+              position: absolute;
+              color: var.$color-crimson;
+              font-size: 0.8rem;
+              left: -5px;
+            }
+          }
+          input[type="text"],
+          input[type="tel"],
+          input[type="email"] {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 5px 10px;
+            border-radius: 2px;
+            color: var.$color-primary;
+            font-size: 0.9rem;
+            height: 40px;
+            &::placeholder {
+              color: gray;
+              font-size: 0.9rem;
+            }
+            &:focus {
+              border: solid 2px var.$color-btn-primary;
+            }
+          }
+          .select-wrapper {
+            position: relative;
+            width: 200px;
+            select {
+              width: 100%;
+              background: rgba(255, 255, 255, 0.85);
+              padding: 5px 10px;
+              border-radius: 2px;
+              color: var.$color-primary;
+              font-size: 0.9rem;
+              height: 40px;
+            }
+            &::after {
+              content: "";
+              position: absolute;
+              pointer-events: none;
+              right: 0.7rem;
+              top: 50%;
+              transform: translateY(-50%) rotate(45deg);
+              width: 0.5rem;
+              height: 0.5rem;
+              border-right: 2px solid var.$color-bluegray;
+              border-bottom: 2px solid var.$color-bluegray;
+              opacity: 0.8;
+            }
+          }
+          textarea {
+            width: 100%;
+            min-height: 100px; /* 初期の高さ */
+            max-height: 1000px;
+            resize: none; /* ユーザーによる手動リサイズを禁止（必要に応じて） */
+            overflow: hidden; /* スクロールバーを隠す */
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 10px;
+            color: var.$color-primary;
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+  }
+</style>

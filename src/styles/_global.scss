@@ -1,0 +1,43 @@
+@use "../styles/var" as var;
+@use "sass:color";
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin: 40px 0px;
+  .btn {
+    display: grid;
+    place-items: center;
+    padding: 10px;
+    width: 100%;
+    background: var.$color-btn-primary;
+    border-radius: 4px;
+    font-weight: bold;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .btn_primary {
+    background: var.$color-btn-primary;
+    &:hover {
+      background: color.adjust(var.$color-btn-primary, $lightness: 10%);
+    }
+  }
+  .btn_secondary {
+    background: var.$color-btn-secondary;
+    background: color.adjust(var.$color-btn-secondary, $lightness: 10%);
+  }
+}
+.btn_textlink {
+  margin: auto;
+  text-align: center;
+  a {
+    background: var.$color-btn-primary;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var.$color-textnega;
+    padding: 10px 20px;
+    border-radius: 4px;
+  }
+}

@@ -1,0 +1,210 @@
+---
+import CardCrystal from "./CardSemiconductor.astro";
+import SectionHeading from "../../heading/SectionHeading.astro";
+
+const companies = [
+  {
+    image: "/images/tmbimg_crystal-01.webp",
+    title: "INTEL（ALTERA）",
+    description: "",
+    link: "https://www.intel.co.jp/content/www/jp/ja/products/details/fpga.html",
+  },
+  {
+    image: "/images/tmbimg_crystal-02.webp",
+    title: "AMD（XILINX）",
+    description: "",
+    link: "https://www.amd.com/ja/products/adaptive-socs-and-fpgas/fpga.html",
+  },
+  {
+    image: "/images/tmbimg_crystal-03.webp",
+    title: "LATTICE SEMICONDUCTOR",
+    description: "",
+    link: "https://www.latticesemi.com/ja-JP",
+  },
+  {
+    image: "/images/tmbimg_crystal-04.webp",
+    title: "エヌエフ回路設計ブロック",
+    description: "",
+    link: "https://www.nfcorp.co.jp/",
+  },
+  {
+    image: "/images/tmbimg_crystal-05.webp",
+    title: "MICROCHIP TECHNOLOGY",
+    description: "",
+    link: "https://www.microchip.co.jp/",
+  },
+  {
+    image: "/images/tmbimg_crystal-05.webp",
+    title: "MICRON TECHNOLOGY",
+    description: "",
+    link: "https://jp.micron.com/",
+  },
+  {
+    image: "/images/tmbimg_crystal-05.webp",
+    title: "MONOLITHIC POWER SYSTEMS（MPS）",
+    description: "",
+    link: "https://www.monolithicpower.com/jp/",
+  },
+];
+---
+
+<SectionHeading
+  headingEn="Semiconductor"
+  ,
+  headingJa="半導体関連製品"
+  ,
+  headingSub="取り扱い商品"
+/>
+<div class="grid-wrapper" id="scrollWrapper">
+  <div class="company-grid-container">
+    {
+      companies.map((company, index) => (
+        <div
+          class={`grid-item ${index === companies.length - 1 ? "large-item" : ""}`}
+        >
+          <CardCrystal
+            key={index}
+            image={company.image}
+            title={company.title}
+            description={company.description}
+            link={company.link}
+          />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style lang="scss">
+  @use "../../../styles/var" as var;
+  .grid-wrapper {
+    width: 100vw;
+    margin: auto;
+    padding: 0 20px;
+  }
+  .company-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto, 1fr);
+    gap: 10px; /* アイテム間の間隔 */
+    margin: auto;
+    .grid-item {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      flex: 0 0 auto;
+      justify-content: center;
+      align-items: center;
+      background-color: #3b4c5a;
+      border-radius: 4px;
+      padding: 1rem;
+      color: #fff;
+      text-decoration: none;
+      text-align: center;
+      scroll-snap-align: start;
+      transition: transform 0.3s ease;
+      &.large-item {
+        grid-column: span 2; /* 2列分を占める */
+        justify-self: center; /* グリッドの中央に配置 */
+      }
+      &:hover {
+        transform: scale(1.03);
+      }
+
+      img {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 0.75rem;
+      }
+
+      h3 {
+        white-space: nowrap;
+        font-size: 1rem;
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      p {
+        font-size: 0.875rem;
+        line-height: 1.4;
+      }
+    }
+  }
+
+  .link-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    // grid-template-columns: repeat(4, 1fr);
+    // grid-template-rows: repeat(2, auto);
+    gap: 10px;
+    margin: auto;
+    width: 1120px;
+  }
+  /* ===== ≥1024px：1行マルキー（ここでだけ複製を表示） ===== */
+  @media (min-width: 1024px) {
+    .grid-wrapper {
+      width: 100vw;
+      max-width: 1120px;
+      margin: auto;
+      padding: 0 20px;
+    }
+    .company-grid-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px; /* アイテム間の間隔 */
+      margin: auto;
+      .grid-item {
+        display: grid;
+        place-items: center;
+        width: 100%;
+        flex: 0 0 auto;
+        justify-content: center;
+        align-items: center;
+        background-color: #3b4c5a;
+        border-radius: 4px;
+        padding: 1rem;
+        color: #fff;
+        text-decoration: none;
+        text-align: center;
+        scroll-snap-align: start;
+        transition: transform 0.3s ease;
+        &.large-item {
+          grid-column: span 2; /* 2列分を占める */
+          justify-self: center; /* グリッドの中央に配置 */
+        }
+        &:hover {
+          transform: scale(1.03);
+        }
+
+        img {
+          width: 100%;
+          border-radius: 8px;
+          margin-bottom: 0.75rem;
+        }
+
+        h3 {
+          white-space: nowrap;
+          font-size: 1rem;
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        p {
+          font-size: 0.875rem;
+          line-height: 1.4;
+        }
+      }
+    }
+
+    .link-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      // grid-template-columns: repeat(4, 1fr);
+      // grid-template-rows: repeat(2, auto);
+      gap: 10px;
+      margin: auto;
+      width: 1120px;
+    }
+  }
+</style>

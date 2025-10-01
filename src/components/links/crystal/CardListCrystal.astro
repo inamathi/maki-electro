@@ -1,0 +1,167 @@
+---
+import CardCrystal from "./CardCrystal.astro";
+import SectionHeading from "../../heading/SectionHeading.astro";
+import { withBaseSafe } from "@/lib/withBase";
+
+/* 6件 */
+const companies = [
+  {
+    image: "/images/tmb_crystal-koyo.webp",
+    title: "株式会社光陽精密",
+    description: ["水晶振動子"],
+    link: "http://www.koyo-seimitu.co.jp/",
+  },
+  {
+    image: "/images/tmb_crystal-naka.webp",
+    title: "株式会社ナカアンドカンパニー",
+    description: ["水晶振動子"],
+    link: "https://nakaco.co.jp/",
+  },
+  {
+    image: "/images/tmb_crystal-siward.webp",
+    title: "シワードテクノロジー",
+    description: ["水晶発振器", "水晶振動子", "フィルター"],
+    link: "https://www.siward.com/jp",
+  },
+  {
+    image: "/images/tmb_crystal-kdk.webp",
+    title: "九州電通株式会社",
+    description: [
+      "水晶発振器",
+      "水晶振動子",
+      "フィルター",
+      "リアルタイムクロック",
+      "センサ",
+      "その他",
+    ],
+    link: "http://www.kdk-group.co.jp/",
+  },
+  {
+    image: "/images/tmb_crystal-smi.webp",
+    title: "SMI inc.",
+    description: ["水晶振動子"],
+    link: "http://www.smi-xtal.com/index.html",
+  },
+  {
+    image: "/images/tmb_crystal-sitime.webp",
+    title: "サイタイムコーポレーション",
+    description: ["水晶発振器", "水晶振動子", "フィルター"],
+    link: "https://www.sitime.com/",
+  },
+];
+
+const companiesSafe = companies.map((c) => ({
+  ...c,
+  image: withBaseSafe(c.image),
+}));
+---
+
+<SectionHeading
+  headingEn="Crystal & MEMS"
+  headingJa="水晶・MEMS関連製品"
+  headingSub="取り扱い商品"
+/>
+
+<div class="crystal-rail">
+  <div class="crystal-rail__track">
+    {companiesSafe.map((c, i) => <CardCrystal key={`set1-${i}`} {...c} />)}
+    {
+      /* ★ PCマルキー用の複製セット。≤1023px では .crystal-card--dup を強制非表示 */
+    }
+    {
+      companiesSafe.map((c, i) => (
+        <CardCrystal key={`set2-${i}`} {...c} class="crystal-card--dup" />
+      ))
+    }
+  </div>
+</div>
+
+<style lang="scss">
+  .crystal-rail {
+    --gap: 20px;
+    --speed: 36s;
+
+    position: relative;
+    width: 100%;
+
+    /* デフォルト：≤511pxは縦1列 */
+    &__track {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap);
+      padding: 0 20px;
+    }
+
+    /* ★ 子コンポーネントを確実にスタイルするため :global を使う */
+    :global(.crystal-card--dup) {
+      display: none !important;
+    } /* ≤1023px は常に非表示 */
+    :global(.crystal-card),
+    :global(.crystal-card__img) {
+      /* 外部CSSの干渉を最低限リセット */
+      max-width: none;
+      max-height: none;
+      position: static;
+      inset: auto;
+      transform: none;
+    }
+
+    /* ===== 512–767px：2列×3行（アニメなし） ===== */
+    @media (min-width: 512px) and (max-width: 767px) {
+      &__track {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      :global(.crystal-card) {
+        width: 100% !important;
+      }
+    }
+
+    /* ===== 768–1023px：3列×2行（アニメなし） ===== */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      &__track {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      :global(.crystal-card) {
+        width: 100% !important;
+      }
+    }
+
+    /* ===== ≥1024px：1行マルキー（ここでだけ複製を表示） ===== */
+    @media (min-width: 1024px) {
+      overflow: hidden;
+
+      &__track {
+        display: flex;
+        gap: var(--gap);
+        width: max-content;
+        animation: crystal-marquee var(--speed) linear infinite !important;
+        will-change: transform;
+        align-items: stretch;
+        transform: translateZ(0);
+      }
+
+      /* PCはカード幅を固定（最大360px） */
+      :global(.crystal-card) {
+        width: 360px !important;
+        max-width: 360px !important;
+        flex: 0 0 360px !important;
+      }
+      :global(.crystal-card--dup) {
+        display: flex !important;
+      } /* 複製セットを表示 */
+
+      &:hover &__track {
+        animation-play-state: paused;
+      }
+    }
+
+    @keyframes crystal-marquee {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(-50%, 0, 0);
+      }
+    }
+  }
+</style>

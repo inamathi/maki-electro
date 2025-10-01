@@ -1,0 +1,161 @@
+---
+import Layout from "../layouts/DescriptionLayout.astro";
+import SectionHeading from "../components/heading/SectionHeading.astro";
+import { withBaseSafe } from "@/lib/withBase";
+---
+
+<Layout title="プライバシーポリシー | Privacy Policy">
+  <Fragment slot="head">
+    <meta property="og:title" content="プライバシーポリシー | Privacy Policy" />
+    <meta property="og:type" content="website" />
+  </Fragment>
+  <SectionHeading
+    headingEn="Escapeclause"
+    ,
+    headingJa="免責事項"
+    ,
+    headingSub=""
+  />
+  <main class="escapeclause">
+    <p>
+      株式会社マキエレクトロ （以下、当社と記します）は，<a
+        href="http:
+        www.maki-elec.co.jp">本ウェブサイト</a
+      >に情報を掲載する上で，細心の注意を払っております。しかし，これらの情報の内容が正確であるかどうか，有用なものであるかどうか，確実なものであるかどうか，本ウェブサイトを利用される方（以下”ご利用者”と表記します）の目的に合ったものかどうか，安全なものであるかどうか（機能が中断しないこと，エラーが発生しないこと，欠点を修正すること，本ウェブサイトおよびサーバーにコンピュータウイルスその他の有害物がないこと等）等については一切保証いたしません。
+    </p>
+    <p>
+      本ウェブサイトにおける各種サービス，または各種情報の提供，またはその遅滞，変更，中断，中止，停止もしくは廃止，その他本ウェブサイトに関連して発生したご利用者または第三者の損害について，当社はその一切の責任を負うものではありません。情報の閲覧やサービスの提供を受けるにあたっては，法令上の義務に従った上，ご利用者ご自身の責任において行っていただきますようお願いいたします。
+      また，当社は，予告なしに本ウェブサイト上の情報を変更することがあります。同時に，予告なしに本ウェブサイトの運営を中断・中止させていただくことがあります。理由の如何に関わらず，情報の変更および本ウェブサイトの運用の中断または，中止によって生じるいかなる損害についても，当社は責任を負うものではありません。
+    </p>
+    <p>
+      当社は，本ウェブサイトからリンクしている他のウェブサイトに含まれている情報/サービス等について一切関知しておらず，一切の責任を負わないものとします。リンク先のウェブサイトについては，そのウェブサイトが掲げる条件に従い，ご利用者ご自身の責任においてご利用下さい。
+    </p>
+    <p>
+      当社は，ご利用者の便宜を目的として他のウェブサイトへリンクをしておりますが，これらのウェブサイトの利用や掲載商品，サービス等を推奨するものではありません。また，これらのリンクは，当社とリンク先のウェブサイトを管理・運営する法人/個人との間に，必ずしも提携/協力等の特別な関係があることを意味するものではありません。
+    </p>
+    <p>
+      尚，本ウェブサイトへのリンクに際して連絡は不要です。ただし，本ウェブサイトへのリンクによって発生したトラブルや損害賠償問題などについて，当社は何ら責任を負いません。本ウェブサイトへリンクされた方の責任で処理して下さいますようお願いいたします。
+      本ウェブサイトをご利用の方は，本免責事項の内容をご承諾いただいたものとさせていただきますので，上記ご注意下さいますようお願いいたします。
+    </p>
+  </main>
+  <p class="btn_textlink"><a href={withBaseSafe("/")}>TOP</a></p>
+</Layout>
+
+<style lang="scss">
+  @use "../styles/var" as var;
+  .escapeclause {
+    width: 100vw;
+    margin: auto;
+    color: #fff;
+    line-height: 1.8;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    font-size: 0.85rem;
+    padding: 40px 20px;
+    p {
+      text-align: left;
+      text-indent: 0.9rem;
+      a {
+        &:link {
+          text-decoration: underline;
+        }
+      }
+    }
+    .body {
+      dt {
+        padding: 20px 0 5px;
+        font-weight: bold;
+        text-align: left;
+      }
+      dd {
+        text-align: left;
+        ul {
+          border: solid 2px rgba(var.$color-bluegray, 0.15);
+          padding: 20px;
+          margin: 10px 0;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          border-radius: 8px;
+          li {
+            border-left: solid 5px rgba(var.$color-bluegray, 0.5);
+            padding-left: 8px;
+            line-height: 1rem;
+          }
+        }
+      }
+    }
+    .contact {
+      dt {
+        font-size: 1rem;
+        text-align: left;
+        margin: 5px 0;
+      }
+      dd {
+        text-align: left;
+        font-size: 0.85rem;
+      }
+    }
+  }
+  @include var.up(lg) {
+    .escapeclause {
+      width: 100%;
+      max-width: 720px;
+      margin: auto;
+      color: #fff;
+      line-height: 1.8;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      font-size: 0.9rem;
+      padding: 40px 0;
+      p {
+        text-align: left;
+        text-indent: 0.9rem;
+        a {
+          &:link {
+            text-decoration: underline;
+          }
+        }
+      }
+      .body {
+        dt {
+          padding: 20px 0 5px;
+          font-weight: bold;
+          text-align: left;
+        }
+        dd {
+          text-align: left;
+          ul {
+            border: solid 2px rgba(var.$color-bluegray, 0.15);
+            padding: 20px;
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-radius: 8px;
+            li {
+              border-left: solid 5px rgba(var.$color-bluegray, 0.5);
+              padding-left: 8px;
+              line-height: 1rem;
+            }
+          }
+        }
+      }
+      .contact {
+        dt {
+          font-size: 1rem;
+          text-align: left;
+          margin: 5px 0;
+        }
+        dd {
+          text-align: left;
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+</style>
