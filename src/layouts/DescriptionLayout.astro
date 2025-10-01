@@ -1,6 +1,7 @@
 ---
 import Footer from "@/components/common/Footer.astro";
 import Header from "@/components/common/Header.astro";
+import BackToTop from "@/components/common/BackToTop.astro";
 import "../styles/style.scss";
 
 interface Props {
@@ -36,6 +37,7 @@ const {
       </main>
     </div>
     <Footer />
+    <BackToTop threshold={100} />
   </body>
 </html>
 
