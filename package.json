@@ -4,9 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "build:staging": "astro build --config astro.staging.mjs",
+    "preview:staging": "node scripts/preview-subpath.mjs",
+    "bp:staging": "npm run build:staging && npm run preview:staging",
+    "build:prod": "astro build --config astro.prod.mjs",
+    "preview:prod": "astro preview"
   },
   "dependencies": {
     "@lottiefiles/lottie-player": "^2.0.12",

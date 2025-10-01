@@ -1,6 +1,7 @@
 @use "./_var" as var;
 // @use 'reset';
 @use "./global";
+@use "./backtotop";
 
 body {
   background-color: var.$color-primary;
@@ -92,4 +93,28 @@ meter {
   body {
     font-size: 14px;
   }
+}
+
+/* back to top ボタン用ルール*/
+/* 横は絶対に広がらないよう全体でクリップ */
+:root,
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip; /* Safariが古い場合は hidden にしてOK */
+}
+
+/* ページのラッパがあるなら一緒にクリップ */
+.site,
+.site-main {
+  overflow-x: clip;
+}
+
+/* 念のためメディア要素のはみ出し抑止 */
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
 }

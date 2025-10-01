@@ -1,6 +1,7 @@
 ---
 import LogoMecJa from "../../assets/logoMecJa.svg";
 import { withBaseSafe } from "@/lib/withBase";
+import SafeLink from "@/components/common/SafeLink.astro";
 ---
 
 <div class="footer">
@@ -12,15 +13,23 @@ import { withBaseSafe } from "@/lib/withBase";
 
     <div class="footer-gnav-upper">
       <ul class="footer-gnav-primary">
-        <li><a href={withBaseSafe("/")}>TOP</a></li>
-        <li><a href={withBaseSafe("/company/")}>会社概要</a></li>
-        <li><a href={withBaseSafe("/contact/")}>お問い合わせ</a></li>
+        <li><SafeLink href="/">TOP</SafeLink></li>
+        <li><SafeLink href="/company/">会社概要</SafeLink></li>
+        <li>
+          <SafeLink href="/contact/">お問い合わせ</SafeLink>
+        </li>
       </ul>
 
       <ul class="footer-gnav-secondary">
-        <li><a href={withBaseSafe("/privacy/")}>プライバシーポリシー</a></li>
-        <li><a href={withBaseSafe("/environmental/")}>環境経営方針</a></li>
-        <li><a href={withBaseSafe("/escapeclause/")}>免責事項</a></li>
+        <li>
+          <SafeLink href="/privacy/">プライバシーポリシー</SafeLink>
+        </li>
+        <li>
+          <SafeLink href="/environmental/">環境経営方針</SafeLink>
+        </li>
+        <li>
+          <SafeLink href="/escapeclause/">免責事項</SafeLink>
+        </li>
       </ul>
     </div>
   </div>

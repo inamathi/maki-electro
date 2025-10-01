@@ -1,0 +1,35 @@
+---
+import { withBaseSafe } from "@/lib/withBase";
+
+// props: href（必須）/ endSlash（内部リンクの末尾スラを自動付与。既定:true）
+const {
+  href = "#",
+  endSlash = true,
+  ...rest
+} = Astro.props as {
+  href?: string;
+  endSlash?: boolean;
+  [key: string]: any;
+};
+
+// 外部 or アンカー or mailto/tel はそのまま
+const isExternal =
+  /^([a-z]+:)?\/\//i.test(href) ||
+  href.startsWith("mailto:") ||
+  href.startsWith("tel:") ||
+  href.startsWith("#");
+
+function toInternal(h: string) {
+  let p = h || "/";
+  if (!p.startsWith("/")) p = "/" + p;
+  // 拡張子が無い内部ページなら末尾スラ付与（/page/ 形式に統一）
+  if (endSlash && !/\.[a-z0-9]+$/i.test(p) && !p.endsWith("/")) p += "/";
+  return withBaseSafe(p);
+}
+
+const finalHref = isExternal ? href : toInternal(href);
+---
+
+<a href={finalHref} {...rest}>
+  <slot />
+</a>

@@ -1,6 +1,7 @@
 ---
 import { withBaseSafe } from "@/lib/withBase";
 const ctaBg = `url('${withBaseSafe("/images/bgimg_cta.webp")}')`;
+import SafeLink from "@/components/common/SafeLink.astro";
 ---
 
 <script>
@@ -22,8 +23,9 @@ const ctaBg = `url('${withBaseSafe("/images/bgimg_cta.webp")}')`;
 </script>
 
 <div class="cta parent" style={`--cta-bg: ${ctaBg};`}>
-  <a href={withBaseSafe("/contact/")}
-    >弊社取り扱い製品については<br />こちらよりお気軽にお問い合わせください</a
+  <SafeLink href="/contact/"
+    >弊社取り扱い製品については<br
+    />こちらよりお気軽にお問い合わせください</SafeLink
   >
 </div>
 

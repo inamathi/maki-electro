@@ -1,5 +1,6 @@
 ---
 import { withBaseSafe } from "@/lib/withBase";
+import SafeLink from "@/components/common/SafeLink.astro";
 const { image, title, description, link, class: className = "" } = Astro.props;
 const imgSrc = withBaseSafe(image);
 const items = Array.isArray(description)
@@ -10,7 +11,12 @@ const items = Array.isArray(description)
       .filter(Boolean);
 ---
 
-<a class={`crystal-card ${className}`} href={link}>
+<SafeLink
+  class={`crystal-card ${className}`}
+  href={link}
+  endSlash={true}
+  target="_blank"
+>
   <img
     class="crystal-card__img"
     src={imgSrc}
@@ -22,7 +28,7 @@ const items = Array.isArray(description)
   <ul class="crystal-card__tags" role="list">
     {items.map((item, i) => <li key={i}>{item}</li>)}
   </ul>
-</a>
+</SafeLink>
 
 <style lang="scss">
   .crystal-card {

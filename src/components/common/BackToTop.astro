@@ -1,0 +1,83 @@
+---
+const { threshold = 300, label = "ページ上部へ" } = Astro.props;
+const uid = `to-top-${Math.random().toString(36).slice(2)}`;
+---
+
+<button
+  id={uid}
+  class="to-top"
+  type="button"
+  aria-label={label}
+  hidden
+  data-threshold={threshold}></button>
+
+<script is:inline>
+  (function () {
+    var btn = document.querySelector(".to-top");
+    if (!btn) return;
+
+    var threshold = Number(btn.getAttribute("data-threshold") || 300);
+    var preferReduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    function detectScroller() {
+      var candidates = [
+        document.querySelector("[data-scroll-root]"),
+        document.querySelector(".site"),
+        document.querySelector(".site-main"),
+        document.scrollingElement,
+      ].filter(Boolean);
+
+      for (var i = 0; i < candidates.length; i++) {
+        var el = candidates[i];
+        if (el === document.scrollingElement) return window; // ふつうは window でOK
+        if (el.scrollHeight > el.clientHeight) return el; // 自前のスクロール容器
+      }
+      return window;
+    }
+
+    var scroller = detectScroller();
+
+    function getScrollY() {
+      if (scroller === window) {
+        return (
+          window.scrollY ||
+          document.documentElement.scrollTop ||
+          document.body.scrollTop ||
+          0
+        );
+      }
+      return scroller.scrollTop || 0;
+    }
+
+    function onScroll() {
+      var y = getScrollY();
+      if (y > threshold) {
+        btn.hidden = false;
+        btn.classList.add("is-show");
+      } else {
+        btn.classList.remove("is-show");
+        if (!btn.classList.contains("is-show")) {
+          setTimeout(function () {
+            if (!btn.classList.contains("is-show")) btn.hidden = true;
+          }, 250);
+        }
+      }
+    }
+
+    function scrollTop() {
+      var behavior = preferReduce ? "auto" : "smooth";
+      if (scroller === window) window.scrollTo({ top: 0, behavior });
+      else scroller.scrollTo({ top: 0, behavior });
+    }
+
+    // どちらでも拾えるように window にも scroller にもイベント登録
+    window.addEventListener("scroll", onScroll, { passive: true });
+    if (scroller !== window)
+      scroller.addEventListener("scroll", onScroll, { passive: true });
+
+    window.addEventListener("load", onScroll);
+    btn.addEventListener("click", scrollTop);
+  })();
+</script>

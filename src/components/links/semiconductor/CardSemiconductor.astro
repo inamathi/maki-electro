@@ -1,7 +1,8 @@
 ---
 const { title, link } = Astro.props;
+import SafeLink from "@/components/common/SafeLink.astro";
 ---
 
-<a class="card" href={link}>
+<SafeLink class="card" href={link}>
   <h3>{title}</h3>
-</a>
+</SafeLink>

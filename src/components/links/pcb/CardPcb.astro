@@ -1,16 +1,17 @@
 ---
 import { withBaseSafe } from "@/lib/withBase";
+import SafeLink from "@/components/common/SafeLink.astro";
 const { image, title, description, link } = Astro.props;
 const imgSrc = withBaseSafe(image);
 ---
 
-<div class="card">
+<SafeLink class="card" href={link} endSlash={true}>
   <img src={imgSrc} alt={title} loading="lazy" decoding="async" />
   <dl>
     <dt>{title}</dt>
     <dd>{description}</dd>
   </dl>
-</div>
+</SafeLink>
 
 <style lang="scss">
   @use "../../../styles/var" as var;

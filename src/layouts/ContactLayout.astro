@@ -1,6 +1,7 @@
 ---
 import Footer from "@/components/common/Footer.astro";
 import Header from "@/components/common/Header.astro";
+import BackToTop from "@/components/common/BackToTop.astro";
 import "../styles/style.scss";
 ---
 
@@ -20,6 +21,7 @@ import "../styles/style.scss";
         <slot />
       </main>
     </div>
+    <BackToTop threshold={100} />
   </body>
 </html>
 
@@ -51,3 +53,26 @@ import "../styles/style.scss";
     flex: 1;
   } /* ここが“余白”を受け持つ */
 </style>
+
+<script is:inline>
+  (function () {
+    var base = import.meta.env.BASE_URL || "/";
+    if (base === "/") {
+      // BASE_URL が "/" の時は SITE から推定
+      try {
+        var sp = new URL(import.meta.env.SITE || "", location.origin).pathname;
+        if (sp && sp !== "/") base = sp.endsWith("/") ? sp : sp + "/";
+      } catch {}
+    }
+    if (base === "/") return; // ルートなら何もしない
+
+    // 取りこぼしの内部リンクに前置
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll('a[href^="/"]').forEach(function (a) {
+        var h = a.getAttribute("href");
+        if (!h || h.startsWith(base)) return;
+        a.setAttribute("href", base + h.replace(/^\//, ""));
+      });
+    });
+  })();
+</script>
